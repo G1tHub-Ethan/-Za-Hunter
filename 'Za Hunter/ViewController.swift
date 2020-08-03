@@ -26,7 +26,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         locationManager.startUpdatingLocation()
         mapView.delegate = self
     }
-    
+    // zooms map onto current location given location and radius
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.first!
         let center = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
@@ -34,7 +34,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         region = MKCoordinateRegion(center: center, span: span)
         mapView.setRegion(region, animated: true)
     }
-    
+    // 
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = "pizza"
@@ -52,7 +52,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
-   //
+    // 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
             return nil
@@ -68,11 +68,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         return pinView
     }
-    
+    //tapping blue i goes to new view controller
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        performSegue(withIdentifier: "ShowLocationDetailsSegue", sender: nil) //tapping blue i goes to new view controller
+        performSegue(withIdentifier: "ShowLocationDetailsSegue", sender: nil)
     }
-    
+    //
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         for mapItem in mapItems {
             if mapItem.placemark.coordinate.latitude == view.annotation?.coordinate.latitude &&
@@ -81,11 +81,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
-    
+    //sends info to location details view controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? LocationDetailsViewController {
-           destination.selectedMapItem = selectedMapItem
+            destination.selectedMapItem = selectedMapItem
         }
-}
-
+    }
 }
